@@ -12,14 +12,15 @@ var target_dir
 var new_pos
 
 var rock
+var manager
 
 func _ready():
 	joint = get_parent().get_node("PickaxeJoint")
 	holderJoint = get_parent().get_node("NodeToJointTo")
 	#if get_tree().get_root().has_node("Rock"):
-	print(get_tree().get_root().get_node("Rock"))
-	rock = get_tree().get_root().get_node("Rock")
-	#rock.connect("body_enter", self, "doMine")
+	manager = get_parent().get_parent().get_node("GameManager")
+	rock = get_parent().get_parent().get_node("Rock")
+	rock.connect("body_enter", self, "doMine", [ ])
 	set_fixed_process(true)
 
 func _fixed_process(delta):
@@ -32,8 +33,7 @@ func _fixed_process(delta):
 	
 	if isHoldingClick:
 		joint.set_global_pos(new_pos)
-		#joint.set_node_b()
 
 
-func doMine():
-	print("Mined!")
+func doMine(body):
+	manager.add(rock.getValue())
