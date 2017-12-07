@@ -1,14 +1,43 @@
-[gd_scene load_steps=4 format=1]
+[gd_scene load_steps=6 format=1]
 
-[ext_resource path="res://icon.png" type="Texture" id=1]
-[ext_resource path="res://Pickaxe/PickCont.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Mineables/Dirt/dirtwall.png" type="Texture" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://Pickaxe/PickCont.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CircleShape2D" id=1]
 
 custom_solver_bias = 0.0
 radius = 32.0
 
+[sub_resource type="GDScript" id=2]
+
+script/source = "extends Area2D
+
+onready var start_pos = get_pos()
+
+func _ready():
+	
+	pass
+
+func shake(power):
+	print(power)
+"
+
 [node name="World" type="Node2D"]
+
+[node name="TextureFrame" type="TextureFrame" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 271.0
+margin/bottom = 481.0
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 7
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
@@ -35,7 +64,8 @@ __meta__ = {
 [node name="Rock" type="Area2D" parent="."]
 
 editor/display_folded = true
-transform/pos = Vector2( 48, 232 )
+transform/pos = Vector2( 64.6884, 225.603 )
+transform/scale = Vector2( 1.49854, 1.49854 )
 input/pickable = false
 shapes/0/shape = SubResource( 1 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
@@ -44,10 +74,11 @@ gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
 linear_damp = 0.1
 angular_damp = 1.0
+script/script = SubResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="Rock"]
 
-texture = ExtResource( 1 )
+texture = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
 }
@@ -61,7 +92,7 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="PickCont" parent="." instance=ExtResource( 2 )]
+[node name="PickCont" parent="." instance=ExtResource( 3 )]
 
 transform/pos = Vector2( 176, 200 )
 
