@@ -1,27 +1,21 @@
-[gd_scene load_steps=6 format=1]
+[gd_scene load_steps=10 format=1]
 
 [ext_resource path="res://Mineables/Dirt/dirtwall.png" type="Texture" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=2]
-[ext_resource path="res://Pickaxe/PickCont.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Rock/Rock.gd" type="Script" id=2]
+[ext_resource path="res://icon.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/pixelSpawner.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Pickaxe/PickCont.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Fonts/Sans.fnt" type="BitmapFont" id=6]
+[ext_resource path="res://GameManager/GameManager.gd" type="Script" id=7]
 
 [sub_resource type="CircleShape2D" id=1]
 
 custom_solver_bias = 0.0
 radius = 32.0
 
-[sub_resource type="GDScript" id=2]
+[sub_resource type="Theme" id=2]
 
-script/source = "extends Area2D
-
-onready var start_pos = get_pos()
-
-func _ready():
-	
-	pass
-
-func shake(power):
-	print(power)
-"
+default_font = ExtResource( 6 )
 
 [node name="World" type="Node2D"]
 
@@ -31,10 +25,55 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 0.0
-margin/top = 0.0
-margin/right = 271.0
-margin/bottom = 481.0
+margin/left = -7.0
+margin/top = -10.0
+margin/right = 134.0
+margin/bottom = 241.0
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 7
+
+[node name="TextureFrame2" type="TextureFrame" parent="."]
+
+rect/scale = Vector2( 1, -1 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -7.0
+margin/top = 490.0
+margin/right = 134.0
+margin/bottom = 741.0
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 7
+
+[node name="TextureFrame1" type="TextureFrame" parent="."]
+
+rect/scale = Vector2( -1, 1 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 275.0
+margin/top = -10.0
+margin/right = 416.0
+margin/bottom = 241.0
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 7
+
+[node name="TextureFrame2 2" type="TextureFrame" parent="."]
+
+rect/scale = Vector2( -1, -1 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 275.0
+margin/top = 490.0
+margin/right = 416.0
+margin/bottom = 741.0
 texture = ExtResource( 1 )
 expand = true
 stretch_mode = 7
@@ -63,7 +102,6 @@ __meta__ = {
 
 [node name="Rock" type="Area2D" parent="."]
 
-editor/display_folded = true
 transform/pos = Vector2( 64.6884, 225.603 )
 transform/scale = Vector2( 1.49854, 1.49854 )
 input/pickable = false
@@ -74,11 +112,12 @@ gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
 linear_damp = 0.1
 angular_damp = 1.0
-script/script = SubResource( 2 )
+script/script = ExtResource( 2 )
+value = 0.1
 
 [node name="Sprite" type="Sprite" parent="Rock"]
 
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )
 __meta__ = {
 "_edit_lock_": true
 }
@@ -92,8 +131,49 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="PickCont" parent="." instance=ExtResource( 3 )]
+[node name="pixelSpawner" parent="Rock" instance=ExtResource( 4 )]
+
+visibility/visible = false
+transform/pos = Vector2( 1.54257, 0.932236 )
+transform/scale = Vector2( 1.33463, 1.33463 )
+
+[node name="PickCont" parent="." instance=ExtResource( 5 )]
 
 transform/pos = Vector2( 176, 200 )
+
+[node name="Control" type="Control" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 1.0
+margin/top = 0.0
+margin/right = 271.0
+margin/bottom = 20.0
+
+[node name="MoneyText" type="Label" parent="Control"]
+
+anchor/left = 3
+anchor/right = 3
+rect/scale = Vector2( 0.5, 0.5 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 3
+size_flags/vertical = 0
+theme/theme = SubResource( 2 )
+margin/left = 136.0
+margin/top = 8.0
+margin/right = -399.0
+margin/bottom = 48.0
+text = "$: "
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="GameManager" type="Node2D" parent="."]
+
+script/script = ExtResource( 7 )
 
 
