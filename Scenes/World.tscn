@@ -1,12 +1,13 @@
-[gd_scene load_steps=10 format=1]
+[gd_scene load_steps=13 format=1]
 
 [ext_resource path="res://Mineables/Dirt/dirtwall.png" type="Texture" id=1]
 [ext_resource path="res://Rock/Rock.gd" type="Script" id=2]
-[ext_resource path="res://icon.png" type="Texture" id=3]
+[ext_resource path="res://Mineables/Stone/stoneSpr.png" type="Texture" id=3]
 [ext_resource path="res://Scenes/pixelSpawner.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Pickaxe/PickCont.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Fonts/Sans.fnt" type="BitmapFont" id=6]
-[ext_resource path="res://GameManager/GameManager.gd" type="Script" id=7]
+[ext_resource path="res://GameManager/GameManager.gd" type="Script" id=6]
+[ext_resource path="res://Fonts/Sans.fnt" type="BitmapFont" id=7]
+[ext_resource path="res://Menus/PauseButton.png" type="Texture" id=8]
 
 [sub_resource type="CircleShape2D" id=1]
 
@@ -15,7 +16,31 @@ radius = 32.0
 
 [sub_resource type="Theme" id=2]
 
-default_font = ExtResource( 6 )
+default_font = ExtResource( 7 )
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+
+[sub_resource type="StyleBoxTexture" id=4]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 8 )
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
 
 [node name="World" type="Node2D"]
 
@@ -106,17 +131,18 @@ transform/pos = Vector2( 64.6884, 225.603 )
 transform/scale = Vector2( 1.49854, 1.49854 )
 input/pickable = false
 shapes/0/shape = SubResource( 1 )
-shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/0/transform = Matrix32( 1.02957, 0, 0, 1.3251, 0.875251, -2.73799 )
 shapes/0/trigger = true
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
 linear_damp = 0.1
 angular_damp = 1.0
 script/script = ExtResource( 2 )
-value = 0.1
+rockNumber = 1
 
 [node name="Sprite" type="Sprite" parent="Rock"]
 
+transform/scale = Vector2( 1.5, 1.5 )
 texture = ExtResource( 3 )
 __meta__ = {
 "_edit_lock_": true
@@ -124,6 +150,8 @@ __meta__ = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Rock"]
 
+transform/pos = Vector2( 0.875251, -2.73799 )
+transform/scale = Vector2( 1.02957, 1.3251 )
 shape = SubResource( 1 )
 trigger = true
 _update_shape_index = 0
@@ -141,8 +169,16 @@ transform/scale = Vector2( 1.33463, 1.33463 )
 
 transform/pos = Vector2( 176, 200 )
 
-[node name="Control" type="Control" parent="."]
+[node name="GameManager" type="Node2D" parent="."]
 
+script/script = ExtResource( 6 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="UI" type="Control" parent="."]
+
+editor/display_folded = true
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -152,7 +188,7 @@ margin/top = 0.0
 margin/right = 271.0
 margin/bottom = 20.0
 
-[node name="MoneyText" type="Label" parent="Control"]
+[node name="MoneyText" type="Label" parent="UI"]
 
 anchor/left = 3
 anchor/right = 3
@@ -172,8 +208,24 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="GameManager" type="Node2D" parent="."]
+[node name="Button" type="Button" parent="UI"]
 
-script/script = ExtResource( 7 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 199.0
+margin/top = 1.0
+margin/right = 268.0
+margin/bottom = 71.0
+custom_styles/hover = SubResource( 3 )
+custom_styles/pressed = SubResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+icon = ExtResource( 8 )
+flat = true
+
+[connection signal="pressed" from="UI/Button" to="GameManager" method="_on_Button_pressed"]
 
 
